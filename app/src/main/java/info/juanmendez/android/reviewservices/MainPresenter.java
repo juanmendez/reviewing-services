@@ -2,7 +2,6 @@ package info.juanmendez.android.reviewservices;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import info.juanmendez.android.reviewservices.helpers.FibServiceConnection;
 import info.juanmendez.android.reviewservices.services.FibonacciService;
@@ -33,7 +32,7 @@ public class MainPresenter {
     public void doFibonacci( int value ){
         connection.getService().runFibonacci( value )
                 .subscribe(s -> {
-                    Log.i("MainActivity", s );
+                    activity.setResultValue("Fibonacci: " + s);
                 });
     }
 
