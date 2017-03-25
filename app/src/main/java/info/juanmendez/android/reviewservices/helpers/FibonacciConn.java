@@ -14,7 +14,7 @@ import android.os.RemoteException;
  * contact@juanmendez.info
  */
 
-public class FibServiceConnection implements ServiceConnection {
+public class FibonacciConn implements ServiceConnection {
     Messenger messenger;
     Boolean isBound = false;
 

@@ -20,32 +20,35 @@ public class ServiceHandler extends Handler {
 
     @Override
     public void handleMessage(Message msg) {
-        Bundle bundle = msg.getData();
-        int febCount = bundle.getInt("value", 0);
 
-        Single.<String>create(e -> {
-            String result = "";
+        if( msg.what == 43 ){
+            Bundle bundle = msg.getData();
+            Messenger messenger = msg.replyTo;
+            int febCount = bundle.getInt("value", 0);
 
-            int[] feb = new int[febCount];
-            feb[0] = 0;
-            feb[1] = 1;
-            for(int i=2; i < febCount; i++){
-                feb[i] = feb[i-1] + feb[i-2];
-            }
+            Single.<String>create(e -> {
+                String result = "";
 
-            for(int i=0; i< febCount; i++) {
-                result += feb[i] + " ";
-            }
+                int[] feb = new int[febCount];
+                feb[0] = 0;
+                feb[1] = 1;
+                for(int i=2; i < febCount; i++){
+                    feb[i] = feb[i-1] + feb[i-2];
+                }
 
-            Thread.sleep(3000);
-            e.onSuccess( result );
-        }).subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(s -> {
-                send( msg.replyTo, s );
-            }, throwable -> {
-                send( msg.replyTo, throwable.getMessage() );
-            });
+                for(int i=0; i< febCount; i++) {
+                    result += feb[i] + " ";
+                }
+
+                e.onSuccess( result );
+            }).subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(s -> {
+                        send( messenger, s );
+                    }, throwable -> {
+                        send( messenger, throwable.getMessage() );
+                    });
+        }
     }
 
     private void send( Messenger messenger, String fibString ){

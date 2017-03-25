@@ -9,7 +9,7 @@ import android.os.Messenger;
 import icepick.Icepick;
 import icepick.State;
 import info.juanmendez.android.reviewservices.helpers.ComponentHandler;
-import info.juanmendez.android.reviewservices.helpers.FibServiceConnection;
+import info.juanmendez.android.reviewservices.helpers.FibonacciConn;
 import info.juanmendez.android.reviewservices.services.FibonacciService;
 
 /**
@@ -21,8 +21,8 @@ import info.juanmendez.android.reviewservices.services.FibonacciService;
 public class MainPresenter {
 
     private MainActivity activity;
-    private Messenger messengerIn = new Messenger(new ComponentHandler());
-    private FibServiceConnection connection = new FibServiceConnection();
+    private Messenger messenger = new Messenger(new ComponentHandler());
+    private FibonacciConn connection = new FibonacciConn();
     @State String fibString;
 
     public MainPresenter(MainActivity activity) {
@@ -47,7 +47,7 @@ public class MainPresenter {
         bundle.putInt("value", value );
 
         msg.setData(bundle);
-        msg.replyTo = messengerIn;
+        msg.replyTo = messenger;
         connection.sendMessage( msg );
     }
 

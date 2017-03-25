@@ -17,6 +17,5 @@ public class ComponentHandler extends Handler {
 
         Bundle bundle = msg.getData();
         String value = bundle.getString("value");
-
     }
 }
