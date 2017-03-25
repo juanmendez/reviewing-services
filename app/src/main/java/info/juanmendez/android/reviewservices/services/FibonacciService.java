@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -33,6 +34,7 @@ public class FibonacciService extends Service {
     public Single<String> runFibonacci(int febCount ){
 
         return  Single.<String>create(e -> {
+            Log.i( "MainActivity", "doing computation in " + Thread.currentThread().getName() );
             String result = "";
 
             int[] feb = new int[febCount];
@@ -46,6 +48,7 @@ public class FibonacciService extends Service {
                 result += feb[i] + " ";
             }
 
+            Thread.sleep(3000);
             e.onSuccess( result );
         }).subscribeOn(Schedulers.computation())
           .observeOn(AndroidSchedulers.mainThread());
