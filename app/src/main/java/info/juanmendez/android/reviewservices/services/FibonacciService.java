@@ -19,11 +19,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public class FibonacciService extends Service {
 
-    private Binder fibonacciBinder = new Binder(){
-        FibonacciService getService() {
-            return FibonacciService.this;
-        }
-    };
+
+
+
+    private Binder fibonacciBinder = new FibBinder();
 
     @Nullable
     @Override
@@ -31,9 +30,9 @@ public class FibonacciService extends Service {
         return fibonacciBinder;
     }
 
-    public Single runFibonacci(int febCount ){
+    public Single<String> runFibonacci(int febCount ){
 
-        return  Single.create(e -> {
+        return  Single.<String>create(e -> {
             String result = "";
 
             int[] feb = new int[febCount];
@@ -46,7 +45,15 @@ public class FibonacciService extends Service {
             for(int i=0; i< febCount; i++) {
                 result += feb[i] + " ";
             }
+
+            e.onSuccess( result );
         }).subscribeOn(Schedulers.computation())
           .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public class FibBinder extends Binder{
+        public FibonacciService getService(){
+            return FibonacciService.this;
+        }
     }
 }
