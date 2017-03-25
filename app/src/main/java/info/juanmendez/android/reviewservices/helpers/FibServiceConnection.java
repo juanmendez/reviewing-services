@@ -3,8 +3,9 @@ package info.juanmendez.android.reviewservices.helpers;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-
-import info.juanmendez.android.reviewservices.services.FibonacciService;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 
 
 /**
@@ -14,14 +15,13 @@ import info.juanmendez.android.reviewservices.services.FibonacciService;
  */
 
 public class FibServiceConnection implements ServiceConnection {
-
-    FibonacciService service;
+    Messenger messenger;
     Boolean isBound = false;
 
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-        FibonacciService.FibBinder binder = (FibonacciService.FibBinder) iBinder;
-        service = binder.getService();
+
+        messenger = new Messenger(iBinder);
         isBound = true;
     }
 
@@ -38,7 +38,11 @@ public class FibServiceConnection implements ServiceConnection {
         return isBound;
     }
 
-    public FibonacciService getService() {
-        return service;
+    public void sendMessage( Message msg ){
+        try {
+            messenger.send( msg );
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }
