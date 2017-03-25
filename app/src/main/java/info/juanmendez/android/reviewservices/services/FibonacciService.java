@@ -53,6 +53,7 @@ public class FibonacciService extends Service {
                     result +=  feb[i] + " ";
                 }
 
+                Thread.sleep(2000);
                 return result;
             }).subscribeOn(Schedulers.computation())
               .observeOn(AndroidSchedulers.mainThread())
