@@ -6,7 +6,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import io.reactivex.Completable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -31,17 +31,10 @@ public class FibonacciService extends Service {
         return fibonacciBinder;
     }
 
-    public Completable runFibonacci(int febCount ){
+    public Single runFibonacci(int febCount ){
 
-        /**
-         * This message showed up when I tried instead to run callable in mainThread
-         * 03-24 23:56:53.334 3182-3192/info.juanmendez.android.reviewservices I/art: Background partial concurrent mark sweep GC freed 46(1776B) AllocSpace objects, 64(13MB) LOS objects, 39% free, 5MB/9MB, paused 6.469ms total 58.319ms
-         */
-        return Completable.fromAction(() -> {
-
+        return  Single.create(e -> {
             String result = "";
-
-            // See more at: http://www.java2novice.com/java-interview-programs/fibonacci-series/
 
             int[] feb = new int[febCount];
             feb[0] = 0;
@@ -50,11 +43,10 @@ public class FibonacciService extends Service {
                 feb[i] = feb[i-1] + feb[i-2];
             }
 
-            for(int i=0; i< febCount; i++){
-                result +=  feb[i] + " ";
+            for(int i=0; i< febCount; i++) {
+                result += feb[i] + " ";
             }
-
-
-        }).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread());
+        }).subscribeOn(Schedulers.computation())
+          .observeOn(AndroidSchedulers.mainThread());
     }
 }
