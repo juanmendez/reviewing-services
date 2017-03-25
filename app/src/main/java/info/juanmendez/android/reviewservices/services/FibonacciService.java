@@ -40,6 +40,8 @@ public class FibonacciService extends Service {
                 Log.i("FibonacciService", "running in " + Thread.currentThread().getName() );
                 String result = "";
 
+                // See more at: http://www.java2novice.com/java-interview-programs/fibonacci-series/
+
                 int[] feb = new int[febCount];
                 feb[0] = 0;
                 feb[1] = 1;
@@ -50,8 +52,6 @@ public class FibonacciService extends Service {
                 for(int i=0; i< febCount; i++){
                     result +=  feb[i] + " ";
                 }
-
-                // See more at: http://www.java2novice.com/java-interview-programs/fibonacci-series/#sthash.Clgk0pQ4.dpuf
 
                 return result;
             }).subscribeOn(Schedulers.computation())
@@ -67,6 +67,7 @@ public class FibonacciService extends Service {
 
     @Override
     public void onDestroy() {
+        Log.i( "FibonacciService", "good bye!" );
         super.onDestroy();
     }
 }

@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editText;
     private Button button;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,11 +24,23 @@ public class MainActivity extends AppCompatActivity {
 
         button.setOnClickListener(view -> {
             String value = editText.getText().toString();
+            String buttonValue = button.getText().toString();
 
-            if( !value.isEmpty() ){
-                Intent intent = new Intent(MainActivity.this, FibonacciService.class);
-                intent.putExtra("value", Integer.valueOf(value));
-                startService(intent);
+            Intent intent = new Intent(MainActivity.this, FibonacciService.class);
+
+            if( buttonValue.equals( getString(R.string.start_service))){
+                if( !value.isEmpty() ){
+                    button.setText( getString(R.string.stop_service));
+                    editText.setEnabled(false);
+
+                    intent.putExtra("value", Integer.valueOf(value));
+                    startService(intent);
+                }
+            }else{
+                editText.setEnabled(true);
+                button.setText( getString(R.string.start_service));
+
+                stopService( intent );
             }
         });
     }
