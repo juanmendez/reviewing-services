@@ -1,13 +1,14 @@
 package info.juanmendez.android.reviewservices;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 
 import icepick.Icepick;
 import icepick.State;
-import info.juanmendez.android.reviewservices.helpers.FibServiceConnection;
+import info.juanmendez.android.reviewservices.dependencies.Codes;
 import info.juanmendez.android.reviewservices.services.FibonacciService;
 
 /**
@@ -19,7 +20,6 @@ import info.juanmendez.android.reviewservices.services.FibonacciService;
 public class MainPresenter {
 
     private MainActivity activity;
-    private FibServiceConnection connection = new FibServiceConnection();
     @State String fibString;
 
     public MainPresenter(MainActivity activity) {
@@ -28,36 +28,37 @@ public class MainPresenter {
 
     public void onStart(Bundle savedInstanceState){
         Icepick.restoreInstanceState( this, savedInstanceState );
-        startConnection();
         activity.setResultValue( fibString );
+        startReceiver();
     }
 
     public void onStop(Bundle outState){
         Icepick.saveInstanceState(this, outState);
-        endConnection();
+        endReceiver();
     }
 
     public void doFibonacci( int value ){
-        connection.getService().runFibonacci( value )
-                .subscribe(s -> {
-                    activity.setResultValue(fibString="Fibonacci: " + s);
-                }, throwable -> {
-                    Log.i( "MainActivity", "mmm... " + throwable.getMessage() );
-                });
+        Intent intent = new Intent(activity, FibonacciService.class);
+        intent.putExtra(Codes.FROM_FIELD_REQUEST, value );
+        activity.startService( intent );
     }
 
-    private void startConnection(){
-        if (!connection.getBound()) {
+    private void startReceiver(){
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Codes.LOCAL_BROADCASTER);
+        activity.registerReceiver(broadcastReceiver, intentFilter);
+    }
 
-            Intent intent = new Intent(activity, FibonacciService.class);
-            activity.bindService( intent, connection, Context.BIND_AUTO_CREATE );
+    private void endReceiver(){
+        activity.unregisterReceiver(broadcastReceiver);
+    }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver(){
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String result = intent.getStringExtra(Codes.TO_FIELD_REPLY);
+            activity.setResultValue(result);
         }
-    }
-
-    private void endConnection(){
-        if (connection.getBound()) {
-            activity.unbindService(connection);
-            connection.setBound( false );
-        }
-    }
+    };
 }

@@ -2,11 +2,10 @@ package info.juanmendez.android.reviewservices.services;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
+import info.juanmendez.android.reviewservices.dependencies.Codes;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -19,19 +18,21 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class FibonacciService extends Service {
-    
-    private Binder fibonacciBinder = new FibBinder();
 
-    @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
-        return fibonacciBinder;
+    public void onCreate() {
+        super.onCreate();
     }
 
-    public Single<String> runFibonacci(int febCount ){
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        runFibonacci( intent.getIntExtra(Codes.FROM_FIELD_REQUEST, 0));
+        return START_STICKY;
+    }
 
-        return  Single.<String>create(e -> {
-            Log.i( "MainActivity", "doing computation in " + Thread.currentThread().getName() );
+    public void runFibonacci(int febCount ){
+
+         Single.<String>create(e -> {
             String result = "";
 
             int[] feb = new int[febCount];
@@ -48,12 +49,23 @@ public class FibonacciService extends Service {
             Thread.sleep(3000);
             e.onSuccess( result );
         }).subscribeOn(Schedulers.computation())
-          .observeOn(AndroidSchedulers.mainThread());
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(s -> {
+              stopSelf();
+              Intent intent = new Intent(Codes.LOCAL_BROADCASTER);
+              intent.putExtra(Codes.TO_FIELD_REPLY, s );
+              sendBroadcast( intent );
+          }, throwable -> {
+              stopSelf();
+              Intent intent = new Intent(Codes.LOCAL_BROADCASTER);
+              intent.putExtra(Codes.TO_FIELD_REPLY, throwable.getMessage() );
+              sendBroadcast( intent );
+          });
     }
 
-    public class FibBinder extends Binder{
-        public FibonacciService getService(){
-            return FibonacciService.this;
-        }
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 }
