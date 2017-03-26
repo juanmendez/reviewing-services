@@ -1,16 +1,21 @@
 package info.juanmendez.android.reviewservices;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import info.juanmendez.android.reviewservices.dependencies.Codes;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText editText;
     private Button button;
     private TextView testResult;
+
 
 
     MainPresenter presenter = new MainPresenter(this);

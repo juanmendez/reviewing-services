@@ -1,4 +1,4 @@
-package info.juanmendez.android.reviewservices.services;
+package info.juanmendez.android.reviewservices;
 
 import android.app.Service;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.os.IBinder;
 import android.os.Messenger;
 import android.support.annotation.Nullable;
 
-import info.juanmendez.android.reviewservices.helpers.ServiceHandler;
+import info.juanmendez.android.reviewservices.dependencies.ServiceHandler;
 
 
 /**

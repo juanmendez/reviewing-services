@@ -1,4 +1,4 @@
-package info.juanmendez.android.reviewservices.helpers;
+package info.juanmendez.android.reviewservices.dependencies;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,10 +21,10 @@ public class ServiceHandler extends Handler {
     @Override
     public void handleMessage(Message msg) {
 
-        if( msg.what == 43 ){
+        if( msg.what == Codes.CODE_REQUEST){
             Bundle bundle = msg.getData();
             Messenger messenger = msg.replyTo;
-            int febCount = bundle.getInt("value", 0);
+            int febCount = bundle.getInt(Codes.FIELD_REQUEST, 0);
 
             Single.<String>create(e -> {
                 String result = "";
@@ -53,9 +53,9 @@ public class ServiceHandler extends Handler {
 
     private void send( Messenger messenger, String fibString ){
 
-        Message msg = Message.obtain(null, 1);
+        Message msg = Message.obtain(null, Codes.CODE_REPLY);
         Bundle bundle = new Bundle();
-        bundle.putString("value", fibString );
+        bundle.putString(Codes.FIELD_REPLY, fibString );
         msg.setData(bundle);
 
         try {

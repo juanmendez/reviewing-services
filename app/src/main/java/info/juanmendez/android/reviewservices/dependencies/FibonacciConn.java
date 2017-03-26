@@ -1,4 +1,4 @@
-package info.juanmendez.android.reviewservices.helpers;
+package info.juanmendez.android.reviewservices.dependencies;
 
 import android.content.ComponentName;
 import android.content.ServiceConnection;

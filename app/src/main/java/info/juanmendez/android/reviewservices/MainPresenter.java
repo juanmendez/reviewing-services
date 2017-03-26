@@ -3,14 +3,14 @@ package info.juanmendez.android.reviewservices;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 
 import icepick.Icepick;
 import icepick.State;
-import info.juanmendez.android.reviewservices.helpers.ComponentHandler;
-import info.juanmendez.android.reviewservices.helpers.FibonacciConn;
-import info.juanmendez.android.reviewservices.services.FibonacciService;
+import info.juanmendez.android.reviewservices.dependencies.Codes;
+import info.juanmendez.android.reviewservices.dependencies.FibonacciConn;
 
 /**
  * Created by Juan Mendez on 3/25/2017.
@@ -21,7 +21,7 @@ import info.juanmendez.android.reviewservices.services.FibonacciService;
 public class MainPresenter {
 
     private MainActivity activity;
-    private Messenger messenger = new Messenger(new ComponentHandler());
+    private Messenger messenger = new Messenger( new MainHandler() );
     private FibonacciConn connection = new FibonacciConn();
     @State String fibString;
 
@@ -42,9 +42,9 @@ public class MainPresenter {
 
     public void doFibonacci( int value ){
 
-        Message msg = Message.obtain(null, 43);
+        Message msg = Message.obtain(null, Codes.CODE_REQUEST);
         Bundle bundle = new Bundle();
-        bundle.putInt("value", value );
+        bundle.putInt(Codes.FIELD_REQUEST, value );
 
         msg.setData(bundle);
         msg.replyTo = messenger;
@@ -60,6 +60,15 @@ public class MainPresenter {
         if (connection.getBound()) {
             activity.unbindService(connection);
             connection.setBound( false );
+        }
+    }
+
+    private class MainHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle bundle = msg.getData();
+            String value = bundle.getString(Codes.FIELD_REPLY);
+            activity.setResultValue(value);
         }
     }
 }

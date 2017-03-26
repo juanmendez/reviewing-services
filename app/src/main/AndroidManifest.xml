@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".services.FibonacciService"/>
+        <service android:name=".FibonacciService"/>
     </application>
 
 </manifest>
