@@ -2,6 +2,8 @@ package info.juanmendez.android.reviewservices.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
 
 import info.juanmendez.android.reviewservices.dependencies.Codes;
@@ -21,8 +23,15 @@ public class FibonacciService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-            int febCount = intent.getIntExtra(Codes.FIELD_REQUEST, 0);
-            runFibonacci(febCount);
+
+
+        ResultReceiver resultReceiver = intent.getParcelableExtra(Codes.FROM_FIELD_RECEIVER);
+        int febCount = intent.getIntExtra(Codes.FROM_FIELD_REQUEST, 0);
+
+
+        Bundle bundle = new Bundle();
+        bundle.putString(Codes.TO_FIELD_REPLY, runFibonacci(febCount));
+        resultReceiver.send(Codes.TO_CODE_REPLY, bundle);
     }
 
     private String runFibonacci(int febCount ){
