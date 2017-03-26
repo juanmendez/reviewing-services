@@ -1,6 +1,6 @@
 # Review Services
 
-Each branch is a topic of working with Services in Android.
+Each branch is a topic of working with Services in Android. I learned Services a while ago, but haven't used several features in a while, so I did these demos and included them with RxJava2.
 
 What's in each branch:
 
