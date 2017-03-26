@@ -56,7 +56,9 @@ public class MainPresenter {
             if (resultCode == Codes.TO_CODE_REPLY && resultData != null) {
 
                 final String value = resultData.getString(Codes.TO_FIELD_REPLY);
-
+                
+                //remember intentService lives in a background thread.
+                //to publish into activity we use Handler to switch.
                 handler.post(() -> {
                    activity.setResultValue(value);
                 });
