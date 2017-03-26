@@ -42,9 +42,9 @@ public class MainPresenter {
 
     public void doFibonacci( int value ){
 
-        Message msg = Message.obtain(null, Codes.CODE_REQUEST);
+        Message msg = Message.obtain(null, Codes.FROM_CODE_REQUEST);
         Bundle bundle = new Bundle();
-        bundle.putInt(Codes.FIELD_REQUEST, value );
+        bundle.putInt(Codes.FROM_FIELD_REQUEST, value );
 
         msg.setData(bundle);
         msg.replyTo = messenger;
@@ -67,7 +67,7 @@ public class MainPresenter {
         @Override
         public void handleMessage(Message msg) {
             Bundle bundle = msg.getData();
-            String value = bundle.getString(Codes.FIELD_REPLY);
+            String value = bundle.getString(Codes.TO_FIELD_REPLY);
             activity.setResultValue(value);
         }
     }

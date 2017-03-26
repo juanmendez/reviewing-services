@@ -7,9 +7,9 @@ package info.juanmendez.android.reviewservices.dependencies;
  */
 
 public class Codes {
-    public static final int CODE_REQUEST = 1;
-    public static final String FIELD_REQUEST = "fibonacciRequestField";
+    public static final int FROM_CODE_REQUEST = 1;
+    public static final String FROM_FIELD_REQUEST = "fibonacciRequestField";
 
-    public static final int CODE_REPLY = 2;
-    public static final String FIELD_REPLY = "fibonacciReplyField";
+    public static final int TO_CODE_REPLY = 2;
+    public static final String TO_FIELD_REPLY = "fibonacciReplyField";
 }

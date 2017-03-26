@@ -21,10 +21,10 @@ public class ServiceHandler extends Handler {
     @Override
     public void handleMessage(Message msg) {
 
-        if( msg.what == Codes.CODE_REQUEST){
+        if( msg.what == Codes.FROM_CODE_REQUEST){
             Bundle bundle = msg.getData();
             Messenger messenger = msg.replyTo;
-            int febCount = bundle.getInt(Codes.FIELD_REQUEST, 0);
+            int febCount = bundle.getInt(Codes.FROM_FIELD_REQUEST, 0);
 
             Single.<String>create(e -> {
                 String result = "";
@@ -54,9 +54,9 @@ public class ServiceHandler extends Handler {
 
     private void send( Messenger messenger, String fibString ){
 
-        Message msg = Message.obtain(null, Codes.CODE_REPLY);
+        Message msg = Message.obtain(null, Codes.TO_CODE_REPLY);
         Bundle bundle = new Bundle();
-        bundle.putString(Codes.FIELD_REPLY, fibString );
+        bundle.putString(Codes.TO_FIELD_REPLY, fibString );
         msg.setData(bundle);
 
         try {
