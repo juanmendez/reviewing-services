@@ -1,4 +1,4 @@
-# Review Services
+# Plain Service
 
 This is how to make a simple service while omitting any response back to the Android component.
 
