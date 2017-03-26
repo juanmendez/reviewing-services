@@ -1,4 +1,4 @@
-# Review Services
+# Service with local broadcastReceiver
 
 Through a local broadcastReceiver, a service can response back to an Android component.
 
