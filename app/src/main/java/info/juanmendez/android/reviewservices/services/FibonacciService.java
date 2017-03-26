@@ -21,7 +21,7 @@ public class FibonacciService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-            int febCount = intent.getIntExtra(Codes.FIELD_REQUEST, 0);
+            int febCount = intent.getIntExtra(Codes.FROM_FIELD_REQUEST, 0);
             runFibonacci(febCount);
     }
 

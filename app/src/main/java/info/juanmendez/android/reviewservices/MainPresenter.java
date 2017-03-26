@@ -34,7 +34,7 @@ public class MainPresenter {
 
     public void doFibonacci( int value ){
         Intent intent = new Intent(activity, FibonacciService.class);
-        intent.putExtra(Codes.FIELD_REQUEST, value );
+        intent.putExtra(Codes.FROM_FIELD_REQUEST, value );
         activity.startService(intent);
     }
 }
