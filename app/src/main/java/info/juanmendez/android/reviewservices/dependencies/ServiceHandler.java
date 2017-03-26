@@ -40,6 +40,7 @@ public class ServiceHandler extends Handler {
                     result += feb[i] + " ";
                 }
 
+                Thread.sleep(5000);
                 e.onSuccess( result );
             }).subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
