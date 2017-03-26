@@ -19,10 +19,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class FibonacciService extends Service {
-
-
-
-
+    
     private Binder fibonacciBinder = new FibBinder();
 
     @Nullable
