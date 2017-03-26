@@ -2,7 +2,7 @@
 
 Each branch is a topic of working with Services in Android.
 
-What's on each branch:
+What's in each branch:
 
   - 00.simple_service (plain service)
   - 01.bound_service (service using bound services)
