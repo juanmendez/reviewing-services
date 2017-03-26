@@ -1,4 +1,4 @@
-# Review Services
+# Plain Intent Service
 
 Intent Service is sort of an AsyncTask-Service. It inherits itself from Service, but it runs in a background thread. This demo is similar to 00.plain_service, as it only executes the task and there is no reply back.
 
