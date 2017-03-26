@@ -1,9 +1,7 @@
 package info.juanmendez.android.reviewservices.services;
 
-import android.app.Service;
+import android.app.IntentService;
 import android.content.Intent;
-import android.os.Binder;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -18,19 +16,20 @@ import io.reactivex.schedulers.Schedulers;
  * contact@juanmendez.info
  */
 
-public class FibonacciService extends Service {
-    
-    private Binder fibonacciBinder = new FibBinder();
+public class FibonacciService extends IntentService {
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return fibonacciBinder;
+    public FibonacciService(String name) {
+        super(name);
     }
 
-    public Single<String> runFibonacci(int febCount ){
+    @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
 
-        return  Single.<String>create(e -> {
+    }
+
+    private void runFibonacci(int febCount ){
+
+        Single.<String>create(e -> {
             Log.i( "MainActivity", "doing computation in " + Thread.currentThread().getName() );
             String result = "";
 
@@ -48,12 +47,6 @@ public class FibonacciService extends Service {
             Thread.sleep(3000);
             e.onSuccess( result );
         }).subscribeOn(Schedulers.computation())
-          .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public class FibBinder extends Binder{
-        public FibonacciService getService(){
-            return FibonacciService.this;
-        }
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }
